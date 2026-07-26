@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">NovaMart</string>
     <string name="your_card">Your Cart (6)</string>
-    <string name="iphone">iphone 15</string>
-    <string name="iphone_price">$999.00</string>
     <string name="minus">-</string>
     <string name="plus">+</string>
     <string name="one">1</string>
@@ -89,5 +87,48 @@
     <string name="cart">Cart</string>
     <string name="favorites">Favorites</string>
     <string name="profile">Profile</string>
+    <string name="search_hint">Search products...</string>
+    <string name="featured_products">Featured Products</string>
+    <string name="see_all">See All</string>
+    <string name="mega_sale">MEGA SALE</string>
+    <string name="discount_title">Up to 30% Off</string>
+    <string name="discount_subtitle">On selected items</string>
+    <string name="shop_now">Shop Now</string>
+    <string name="electronics">Electronics</string>
+    <string name="fashion">Fashion</string>
+    <string name="shoes">Shoes</string>
+    <string name="beauty">Beauty</string>
+    <string name="accessories">Accessories</string>
+    <!--  Product Names  -->
+    <string name="iphone">iPhone 15</string>
+    <string name="headphone">Sony Headphones</string>
+    <string name="dress">Summer Dress</string>
+    <string name="sport_shoes">Sport Shoes</string>
+    <string name="beauty_product">Beauty Set</string>
+    <string name="sunglasses">Sunglasses</string>
+    <string name="banner_dots">● • • •</string>
+    <!--  Prices  -->
+    <string name="iphone_price">$999.00</string>
+    <string name="headphone_price">$199.00</string>
+    <string name="dress_price">$45.00</string>
+    <string name="shoes_price">$60.00</string>
+    <string name="beauty_price">$29.00</string>
+    <string name="sunglasses_price">$35.00</string>
+    <!--  Ratings  -->
+    <string name="iphone_rating">4.8</string>
+    <string name="headphone_rating">4.6</string>
+    <string name="dress_rating">4.6</string>
+    <string name="shoes_rating">4.5</string>
+    <string name="beauty_rating">4.6</string>
+    <string name="sunglasses_rating">4.7</string>
+    <!--  Category Items  -->
+    <string name="fashion_items">120 items</string>
+    <string name="electronics_items">95 items</string>
+    <string name="shoes_items">80 items</string>
+    <string name="beauty_items">60 items</string>
+    <string name="accessories_items">75 items</string>
+    <string name="home_items">110 items</string>
+    <!--  TODO: Remove or change this placeholder text  -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

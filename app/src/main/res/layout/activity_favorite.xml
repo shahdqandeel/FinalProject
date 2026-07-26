@@ -22,7 +22,7 @@
             android:id="@+id/iv_back"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/baseline_arrow_back_ios_24"
+            android:src="@drawable/ic_back"
             app:tint="@color/black" />
         <TextView
             android:id="@+id/tv_title_favorite"
@@ -45,5 +45,5 @@
         android:name="com.example.e_commerceapp.fragments.BottomNavigationFragment"
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        tools:layout="@layout/activity_bottom_navigation_fragment"/>
+        tools:layout="@layout/fragment_bottom_navigation"/>
 </LinearLayout>

@@ -35,11 +35,37 @@
             android:exported="false" />
         <activity
             android:name=".CartActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".ElectronicsActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".FashionActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".ShoesActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".BeautyActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".HomeProductsActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".AccessoriesActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".CategoriesActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".HomeScreenActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action
+                    android:name="android.intent.action.MAIN"/>
+                <category
+                    android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
     </application>

@@ -1,94 +1,213 @@
 package com.example.e_commerceapp.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.e_commerceapp.CartActivity;
+import com.example.e_commerceapp.CategoriesActivity;
 import com.example.e_commerceapp.FavoriteActivity;
+import com.example.e_commerceapp.HomeScreenActivity;
 import com.example.e_commerceapp.R;
 
 public class BottomNavigationFragment extends Fragment {
 
-    ImageView ivHome, ivCategories, ivCart, ivFavorites, ivProfile;
-    TextView tvHome, tvCategories, tvCart, tvFavorites, tvProfile;
+    LinearLayout navHome;
+    LinearLayout navCategories;
+    LinearLayout navCart;
+    LinearLayout navFavorites;
+    LinearLayout navProfile;
+
+    ImageView ivHome;
+    ImageView ivCategories;
+    ImageView ivCart;
+    ImageView ivFavorites;
+    ImageView ivProfile;
+
+    TextView tvHome;
+    TextView tvCategories;
+    TextView tvCart;
+    TextView tvFavorites;
+    TextView tvProfile;
+
+    public BottomNavigationFragment() {
+    }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_bottom_navigation_fragment, container, false);
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState
+    ) {
 
-        // 1. تعريف الأيقونات والنصوص
+        View view = inflater.inflate(
+                R.layout.fragment_bottom_navigation,
+                container,
+                false
+        );
+
+        // ربط أقسام الشريط
+        navHome = view.findViewById(R.id.nav_home);
+        navCategories = view.findViewById(R.id.nav_categories);
+        navCart = view.findViewById(R.id.nav_cart);
+        navFavorites = view.findViewById(R.id.nav_favorites);
+        navProfile = view.findViewById(R.id.nav_profile);
+
+        // ربط الأيقونات
         ivHome = view.findViewById(R.id.iv_home);
-        tvHome = view.findViewById(R.id.tv_home);
-
         ivCategories = view.findViewById(R.id.iv_categories);
-        tvCategories = view.findViewById(R.id.tv_categories);
-
         ivCart = view.findViewById(R.id.iv_cart);
-        tvCart = view.findViewById(R.id.tv_cart);
-
         ivFavorites = view.findViewById(R.id.iv_favorites);
-        tvFavorites = view.findViewById(R.id.tv_favorites);
-
         ivProfile = view.findViewById(R.id.iv_profile);
+
+        // ربط الكلمات
+        tvHome = view.findViewById(R.id.tv_home);
+        tvCategories = view.findViewById(R.id.tv_categories);
+        tvCart = view.findViewById(R.id.tv_cart);
+        tvFavorites = view.findViewById(R.id.tv_favorites);
         tvProfile = view.findViewById(R.id.tv_profile);
 
-        // 2. تحديث الألوان حسب الشاشة المفتوحة حالياً
-        highlightCurrentTab();
+        makeAllGray();
+        highlightCurrentPage();
 
-        // 3. أداد الـ Click Listeners للتنقل (كما هي لديكِ)
-        // ...
+        // الانتقال إلى Home
+        navHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View clickedView) {
+
+                if (!(requireActivity() instanceof HomeScreenActivity)) {
+
+                    Intent intent = new Intent(
+                            requireContext(),
+                            HomeScreenActivity.class
+                    );
+
+                    startActivity(intent);
+                }
+            }
+        });
+
+        // الانتقال إلى Categories
+        navCategories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View clickedView) {
+
+                if (!(requireActivity() instanceof CategoriesActivity)) {
+
+                    Intent intent = new Intent(
+                            requireContext(),
+                            CategoriesActivity.class
+                    );
+
+                    startActivity(intent);
+                }
+            }
+        });
+
+//         Cart
+        navCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View clickedView) {
+
+                if (!(requireActivity() instanceof CartActivity)) {
+
+                    Intent intent = new Intent(
+                            requireContext(),
+                            CartActivity.class
+                    );
+                    startActivity(intent);
+                }
+            }
+        });
+
+
+        // Favorites
+        navFavorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View clickedView) {
+                if (!(requireActivity() instanceof FavoriteActivity)) {
+
+                    Intent intent = new Intent(
+                            requireContext(),
+                            FavoriteActivity.class
+                    );
+                    startActivity(intent);
+                }
+            }
+        });
+
+        // Profile
+        navProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View clickedView) {
+//
+//                Intent intent = new Intent(
+//                        requireContext(),
+//                        ProfileScreen.class
+//                );
+//
+//                startActivity(intent);
+            }
+        });
 
         return view;
     }
 
-    private void highlightCurrentTab() {
-        if (getActivity() == null) return;
+    private void makeAllGray() {
 
-        // إعادة جميع الأزرار إلى اللون الرمادي افتراضياً
-        resetAllToGray();
+        int grayColor = ContextCompat.getColor(
+                requireContext(),
+                R.color.gray_text
+        );
 
-        // فحص الشاشة الحالية وتلوينها بالبنفسجي
-        if (getActivity() instanceof FavoriteActivity) {
-            setSelected(ivFavorites, tvFavorites);
-        } else if (getActivity() instanceof CartActivity) {
-            setSelected(ivCart, tvCart);
-        }
-        // أضيفي باقي الـ Activities إذا وجد (HomeActivity, CategoriesActivity, ProfileActivity)
+        ivHome.setColorFilter(grayColor);
+        ivCategories.setColorFilter(grayColor);
+        ivCart.setColorFilter(grayColor);
+        ivFavorites.setColorFilter(grayColor);
+        ivProfile.setColorFilter(grayColor);
+
+        tvHome.setTextColor(grayColor);
+        tvCategories.setTextColor(grayColor);
+        tvCart.setTextColor(grayColor);
+        tvFavorites.setTextColor(grayColor);
+        tvProfile.setTextColor(grayColor);
     }
 
-    // دالة تجعل كل الأزرار رمادية
-    private void resetAllToGray() {
-        int grayColor = ContextCompat.getColor(requireContext(), R.color.gray_text);
+    private void highlightCurrentPage() {
 
-        setItemColor(ivHome, tvHome, grayColor);
-        setItemColor(ivCategories, tvCategories, grayColor);
-        setItemColor(ivCart, tvCart, grayColor);
-        setItemColor(ivFavorites, tvFavorites, grayColor);
-        setItemColor(ivProfile, tvProfile, grayColor);
-    }
+        int purpleColor = ContextCompat.getColor(
+                requireContext(),
+                R.color.purple_primary
+        );
 
-    // دالة تميز العنصر النشط باللون البنفسجي
-    private void setSelected(ImageView icon, TextView text) {
-        int purpleColor = ContextCompat.getColor(requireContext(), R.color.purple_primary);
-        setItemColor(icon, text, purpleColor);
-    }
+        if (requireActivity() instanceof HomeScreenActivity) {
 
-    // دالة تطبيق اللون على الأيقونة والنص معاً
-    private void setItemColor(ImageView icon, TextView text, int color) {
-        if (icon != null) {
-            icon.setColorFilter(color); // تغيير لون صورة/أيقونة Vector
-        }
-        if (text != null) {
-            text.setTextColor(color);  // تغيير لون النص
+            ivHome.setColorFilter(purpleColor);
+            tvHome.setTextColor(purpleColor);
+
+        } else if (requireActivity() instanceof CategoriesActivity){
+
+            ivCategories.setColorFilter(purpleColor);
+            tvCategories.setTextColor(purpleColor);
+        }else if (requireActivity() instanceof CartActivity){
+
+            ivCart.setColorFilter(purpleColor);
+            tvCart.setTextColor(purpleColor);
+        }else {
+
+            ivFavorites.setColorFilter(purpleColor);
+            tvFavorites.setTextColor(purpleColor);
         }
     }
 }

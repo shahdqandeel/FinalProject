@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="45dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
+
+        <ImageView
+            android:id="@+id/imageHomeBack"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_back"
+            android:contentDescription="@null"/>
+
+        <TextView
+            android:id="@+id/textHomeTitle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Home"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+        <ImageView
+            android:id="@+id/imageHomeSearch"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/ic_search"
+            android:contentDescription="@null"/>
+
+        <ImageView
+            android:id="@+id/imageHomeFilter"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_filter"
+            android:contentDescription="@null"/>
+
+    </LinearLayout>
+
+    <!-- عدد المنتجات -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
+
+        <TextView
+            android:id="@+id/textHomeItemsFound"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="6 items found"
+            android:textSize="12sp"
+            android:textColor="@color/gray_text"/>
+
+        <TextView
+            android:id="@+id/textHomeSort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sort by ⌄"
+            android:textSize="12sp"
+            android:textColor="@color/gray_text"/>
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listHome"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="2dp"
+        android:scrollbars="none"/>
+
+
+    <fragment
+        android:id="@+id/bottomNavigationFragment"
+        android:name="com.example.e_commerceapp.fragments.BottomNavigationFragment"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        tools:layout="@layout/fragment_bottom_navigation" />
+</LinearLayout>

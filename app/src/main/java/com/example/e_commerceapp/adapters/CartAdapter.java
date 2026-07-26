@@ -1,5 +1,6 @@
 package com.example.e_commerceapp.adapters;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -8,27 +9,31 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.e_commerceapp.CartActivity;
 import com.example.e_commerceapp.ProductDetailsActivity;
 import com.example.e_commerceapp.R;
 import com.example.e_commerceapp.models.CartItem;
+import com.example.e_commerceapp.models.CartManager;
 
 import java.util.ArrayList;
 
 public class CartAdapter extends BaseAdapter {
+    public interface OnCartChangeListener {
+
+        void onItemChanged();
+    }
     Context context;
-    ArrayList<CartItem> cartList=new ArrayList<>();
-    OnCartChangedListener listener;
+    ArrayList<CartItem> cartList;
+
+    private OnCartChangeListener listener;
     LayoutInflater inflater;
 
-    //لحديث الاجمالي في الشاشة عند التغيير
-    public interface OnCartChangedListener{
-        void onCartChanged();
-    }
-    public CartAdapter(Context context, ArrayList<CartItem> cartList,OnCartChangedListener listener){
+    public CartAdapter(Context context, ArrayList<CartItem> cartList, OnCartChangeListener listener){
         this.context=context;
         this.cartList=cartList;
-        this.listener=listener;
+        this.listener = listener;
         inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     public int getCount(){
@@ -56,41 +61,32 @@ public class CartAdapter extends BaseAdapter {
         product_name.setText(cartList.get(position).getName());
         product_price.setText(cartList.get(position).getPrice()+"");
         quantity.setText(cartList.get(position).getQuantity()+"");
-        minusItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CartItem cartItem = cartList.get(position);
-                if(cartItem.getQuantity() > 1){
-                    cartItem.setQuantity(cartItem.getQuantity()-1);
-                    notifyDataSetChanged();
-                    if(listener!=null){
-                        listener.onCartChanged();
-                    }
-                }
-            }
-        });
-        plusItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CartItem cartItem = cartList.get(position);
-                cartItem.setQuantity(cartItem.getQuantity()+1);
-                    notifyDataSetChanged();
-                    if(listener!=null){
-                        listener.onCartChanged();
-                    }
-            }
-        });
 
-        deleteItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if(minusItem != null){
+            minusItem.setOnClickListener(v ->{
+                if(cartList.get(position).getQuantity() > 1) {
+                    cartList.get(position).setQuantity(cartList.get(position).getQuantity() - 1);
+                    notifyDataSetChanged();
+                    if (listener != null) listener.onItemChanged();
+                }
+            });
+        }
+
+        if(plusItem != null){
+            plusItem.setOnClickListener(v ->{
+                cartList.get(position).setQuantity(cartList.get(position).getQuantity() + 1);
+                notifyDataSetChanged();
+                if (listener != null) listener.onItemChanged();
+            });
+        }
+
+        if(deleteItem != null){
+            deleteItem.setOnClickListener(v ->{
                 cartList.remove(position);
                 notifyDataSetChanged();
-                if(listener!=null){
-                    listener.onCartChanged();
-                }
-            }
-        });
+                if (listener != null) listener.onItemChanged();
+            });
+        }
         return root;
     }
 }

@@ -12,4 +12,13 @@
     <color name="red">#FF3B30</color>
     <color name="yellow">#F0DB08</color>
     <color name="green">#25D366</color>
+    <color name="light_purple_bg">#F1EDFF</color>
+    <color name="light_orange_bg">#FFF0DF</color>
+    <color name="light_pink_bg">#FFEAF3</color>
+    <color name="light_green_bg">#EEF8E8</color>
+    <!--  Categories Screen  -->
+    <color name="screen_background">#FAFAFA</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="item_text">#333333</color>
+    <color name="item_count">#8A8A8E</color>
 </resources>

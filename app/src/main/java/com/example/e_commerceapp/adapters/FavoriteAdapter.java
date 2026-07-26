@@ -8,9 +8,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.e_commerceapp.ProductDetailsActivity;
 import com.example.e_commerceapp.R;
+import com.example.e_commerceapp.models.FavoriteManager;
 import com.example.e_commerceapp.models.Product;
 
 import java.util.ArrayList;
@@ -41,17 +42,20 @@ public class FavoriteAdapter extends BaseAdapter {
         TextView product_name=root.findViewById(R.id.tv_product_name);
         TextView product_price=root.findViewById(R.id.tv_product_price);
         TextView product_rating=root.findViewById(R.id.tv_product_rating);
+        ImageView btn_fav = root.findViewById(R.id.iv_heart);
 
         product_img.setImageResource(productArrayList.get(position).getImage());
         product_name.setText(productArrayList.get(position).getName());
         product_price.setText(productArrayList.get(position).getPrice()+"");
         product_rating.setText(productArrayList.get(position).getRating()+"");
 
-        root.setOnClickListener(v ->{
-            Intent intent = new Intent(context, ProductDetailsActivity.class);
-            intent.putExtra("SELECTED_PRODUCT", productArrayList);
-            context.startActivity(intent);
-        });
+        if(btn_fav != null){
+            btn_fav.setOnClickListener(v ->{
+                FavoriteManager.removeFromFavorites(productArrayList.get(position));
+                notifyDataSetChanged();
+                Toast.makeText(context, "Removed from favorites", Toast.LENGTH_SHORT).show();
+            });
+        }
 
         return root;
     }

@@ -21,7 +21,7 @@
             android:id="@+id/iv_back"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/baseline_arrow_back_ios_24"
+            android:src="@drawable/ic_back"
             app:tint="@color/black"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -43,8 +43,9 @@
             <ListView
                 android:id="@+id/lv_cart_item"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:padding="16dp"
+                android:scrollbars="vertical"
                 app:layout_constraintBottom_toTopOf="@id/tv_subtotal"
                 app:layout_constraintTop_toBottomOf="@id/toolbar_cart"
                 app:layout_constraintStart_toStartOf="parent"
@@ -145,6 +146,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout="@layout/activity_bottom_navigation_fragment"/>
+        tools:layout="@layout/fragment_bottom_navigation"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
