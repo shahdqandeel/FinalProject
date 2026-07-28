@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.e_commerceapp.ProductDetailsActivity;
+import com.example.e_commerceapp.activities.ProductDetailsActivity;
 import com.example.e_commerceapp.R;
 import com.example.e_commerceapp.models.Fashion;
 

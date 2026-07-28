@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ProductDetailsActivity">
+    tools:context=".activities.ProductDetailsActivity">
     <RelativeLayout
         android:id="@+id/toolbar_details"
         android:layout_width="match_parent"

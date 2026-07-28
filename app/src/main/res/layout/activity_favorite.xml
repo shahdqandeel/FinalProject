@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context=".FavoriteActivity">
+    tools:context=".activities.FavoriteActivity">
     <LinearLayout
         android:id="@+id/toolbar_favorite"
         android:layout_width="match_parent"

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#1C1C1E</color>
+    <color name="black_text">#1C1C1E</color>
     <color name="white">#FFFFFFFF</color>
     <color name="purple_primary">#6C5CE7</color>
     <color name="purple_dark">#5A4FCF</color>
@@ -21,4 +22,13 @@
     <color name="card_background">#FFFFFF</color>
     <color name="item_text">#333333</color>
     <color name="item_count">#8A8A8E</color>
+    <!--  حالات الطلبات (My Orders)  -->
+    <color name="status_delivered_bg">#E8F8F0</color>
+    <color name="status_delivered_text">#27AE60</color>
+    <color name="status_shipped_bg">#E8F1FF</color>
+    <color name="status_shipped_text">#3B82F6</color>
+    <color name="status_processing_bg">#FFF4E5</color>
+    <color name="status_processing_text">#F39C12</color>
+    <color name="status_cancelled_bg">#FDECEC</color>
+    <color name="status_cancelled_text">#E74C3C</color>
 </resources>

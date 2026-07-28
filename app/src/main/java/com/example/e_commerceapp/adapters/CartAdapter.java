@@ -2,20 +2,15 @@ package com.example.e_commerceapp.adapters;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.e_commerceapp.CartActivity;
-import com.example.e_commerceapp.ProductDetailsActivity;
 import com.example.e_commerceapp.R;
 import com.example.e_commerceapp.models.CartItem;
-import com.example.e_commerceapp.models.CartManager;
 
 import java.util.ArrayList;
 

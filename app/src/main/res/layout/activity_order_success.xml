@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="24dp"
+    android:textDirection="ltr">
+
+    <!-- محتوى النجاح بمنتصف الشاشة -->
+    <LinearLayout
+        android:id="@+id/successContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:layoutDirection="ltr">
+
+        <!-- دائرة النجاح -->
+        <ImageView
+            android:id="@+id/ivSuccess"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_check"
+            android:color="@color/green"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/order_success_title"
+            android:textColor="@color/black_text"
+            android:textSize="19sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:lineSpacingExtra="3dp"
+            android:text="@string/order_success_subtitle"
+            android:textColor="@color/gray_text"
+            android:textSize="13sp"/>
+
+    </LinearLayout>
+
+    <!-- الأزرار مثبتة بأسفل الشاشة -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:layout_marginBottom="40dp">
+
+        <Button
+            android:id="@+id/btnContinueShopping"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/purple_primary"
+            android:elevation="0dp"
+            android:stateListAnimator="@null"
+            android:text="@string/continue_shopping_btn"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/btnViewOrders"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/purple_primary"
+            android:elevation="0dp"
+            android:stateListAnimator="@null"
+            android:text="@string/view_orders_btn"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -14,11 +14,13 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.e_commerceapp.CartActivity;
-import com.example.e_commerceapp.CategoriesActivity;
-import com.example.e_commerceapp.FavoriteActivity;
-import com.example.e_commerceapp.HomeScreenActivity;
+import com.example.e_commerceapp.activities.CartActivity;
+import com.example.e_commerceapp.activities.CategoriesActivity;
+import com.example.e_commerceapp.activities.FavoriteActivity;
+import com.example.e_commerceapp.activities.HomeScreenActivity;
 import com.example.e_commerceapp.R;
+import com.example.e_commerceapp.activities.ProductDetailsActivity;
+import com.example.e_commerceapp.activities.ProfileScreen;
 
 public class BottomNavigationFragment extends Fragment {
 
@@ -100,19 +102,19 @@ public class BottomNavigationFragment extends Fragment {
 
         // الانتقال إلى Categories
         navCategories.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View clickedView) {
+             @Override
+               public void onClick(View clickedView) {
 
-                if (!(requireActivity() instanceof CategoriesActivity)) {
+                  if (!(requireActivity() instanceof CategoriesActivity)) {
 
-                    Intent intent = new Intent(
-                            requireContext(),
-                            CategoriesActivity.class
-                    );
+                      Intent intent = new Intent(
+                      requireContext(),
+                      CategoriesActivity.class
+                       );
 
-                    startActivity(intent);
-                }
-            }
+                  startActivity(intent);
+                  }
+             }
         });
 
 //         Cart
@@ -151,13 +153,14 @@ public class BottomNavigationFragment extends Fragment {
         navProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View clickedView) {
-//
-//                Intent intent = new Intent(
-//                        requireContext(),
-//                        ProfileScreen.class
-//                );
-//
-//                startActivity(intent);
+                if (!(requireActivity() instanceof ProfileScreen)) {
+
+                    Intent intent = new Intent(
+                            requireContext(),
+                            ProfileScreen.class
+                    );
+                    startActivity(intent);
+                }
             }
         });
 
@@ -204,10 +207,14 @@ public class BottomNavigationFragment extends Fragment {
 
             ivCart.setColorFilter(purpleColor);
             tvCart.setTextColor(purpleColor);
-        }else {
+        }else if (requireActivity() instanceof FavoriteActivity){
 
             ivFavorites.setColorFilter(purpleColor);
             tvFavorites.setTextColor(purpleColor);
+        }else {
+
+            ivProfile.setColorFilter(purpleColor);
+            tvProfile.setTextColor(purpleColor);
         }
     }
 }
