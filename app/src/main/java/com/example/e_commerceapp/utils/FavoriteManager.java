@@ -3,6 +3,7 @@ package com.example.e_commerceapp.utils;
 import com.example.e_commerceapp.models.Product;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class FavoriteManager {
 
@@ -26,9 +27,9 @@ public class FavoriteManager {
     }
 
     // دالة تحديث التقييم ديناميكياً فور تغييره في صفحة التفاصيل عن طريق الـ ID
-    public static void updateRating(int productId, float newRating) {
+    public static void updateRating(String productName, float newRating) {
         for (Product item : favoriteList) {
-            if (item.getId() == productId) {
+            if (Objects.equals(item.getName(), productName)) {
                 item.setRating(newRating);
                 break;
             }

@@ -33,17 +33,6 @@ public class FavoriteActivity extends AppCompatActivity {
         adapter = new FavoriteAdapter(this, FavoriteManager.getFavoriteList());
         listViewFavorites.setAdapter(adapter);
 
-        // فتح شاشة التفاصيل عند اختيار أي عنصر من القائمة
-        listViewFavorites.setOnItemClickListener((parent, view, position, id) -> {
-            Product selectedItem = FavoriteManager.getFavoriteList().get(position);
-            Intent intent = new Intent(FavoriteActivity.this, ProductDetailsActivity.class);
-            intent.putExtra("product_id", selectedItem.getId());
-            intent.putExtra("product_name", selectedItem.getName());
-            intent.putExtra("product_price_str", selectedItem.getPrice());
-            intent.putExtra("product_image", selectedItem.getImage());
-            intent.putExtra("product_rating", selectedItem.getRating());
-            startActivity(intent);
-        });
     }
 
     @Override

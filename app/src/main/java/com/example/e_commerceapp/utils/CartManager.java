@@ -30,4 +30,8 @@ public class CartManager {
                 cartList.add(newItem);
             }
         }
+    // تفريغ السلة تماماً
+    public static void clearCart() {
+        cartList.clear();
+    }
 }

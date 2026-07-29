@@ -55,6 +55,11 @@ public class CartActivity extends AppCompatActivity {
                 Intent intent = new Intent(CartActivity.this, CheckoutActivity.class);
                 intent.putExtra("subtotal_price", subtotalPrice);
                 intent.putExtra("shipping_price", shippingFee);
+
+                CartManager.clearCart();
+                if(cartAdapter != null){
+                    cartAdapter.notifyDataSetChanged();
+                }
                 startActivity(intent);
             });
         }

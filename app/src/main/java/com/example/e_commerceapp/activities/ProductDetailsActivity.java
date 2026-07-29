@@ -379,8 +379,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
             product_rating.setText(String.valueOf(newRating));
 
             //2.تحديث التقييم في شاشة المفضلة باستخدام ID
-            int productId = getIntent().getIntExtra("product_id",0);
-            FavoriteManager.updateRating(productId, newRating);
+            String productName = getIntent().getStringExtra("product_name");
+            FavoriteManager.updateRating(productName, newRating);
 
             Toast.makeText(ProductDetailsActivity.this, "Rating updated!", Toast.LENGTH_SHORT).show();
         });
