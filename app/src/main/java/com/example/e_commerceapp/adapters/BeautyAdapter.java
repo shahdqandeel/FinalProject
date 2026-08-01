@@ -8,6 +8,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.e_commerceapp.models.Product;
+import com.example.e_commerceapp.utils.FavoriteManager;
 
 import com.example.e_commerceapp.activities.ProductDetailsActivity;
 import com.example.e_commerceapp.R;
@@ -64,7 +68,8 @@ public class BeautyAdapter extends BaseAdapter {
 
         ImageView imageBeautyItem =
                 root.findViewById(R.id.image_beauty_item);
-
+        ImageView imageFavorite =
+                root.findViewById(R.id.image_beauty_favorite);
         TextView tvBeautyName =
                 root.findViewById(R.id.tv_beauty_name);
 
@@ -92,6 +97,30 @@ public class BeautyAdapter extends BaseAdapter {
         tvBeautyRating.setText(
                 String.valueOf(beauty.getRating())
         );
+        Product product = new Product(
+                beauty.getId(),
+                beauty.getName(),
+                String.valueOf(beauty.getPrice()),
+                beauty.getImage(),
+                beauty.getRating()
+        );
+
+        imageFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                imageFavorite.setImageResource(R.drawable.ic_favorite_red);
+
+                FavoriteManager.addToFavorites(product);
+
+                Toast.makeText(
+                        context,
+                        "Added to Favorites",
+                        Toast.LENGTH_SHORT
+                ).show();
+
+            }
+        });
 
         root.setOnClickListener(new View.OnClickListener() {
             @Override

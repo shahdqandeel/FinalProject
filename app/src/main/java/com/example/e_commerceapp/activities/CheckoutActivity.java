@@ -2,17 +2,26 @@ package com.example.e_commerceapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.e_commerceapp.R;
+import com.example.e_commerceapp.models.Address;
+import com.example.e_commerceapp.models.MyOrder;
+import com.example.e_commerceapp.utils.AddressManager;
+import com.example.e_commerceapp.utils.OrderManager;
+import com.example.e_commerceapp.utils.SessionManager;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Random;
 
 public class CheckoutActivity extends AppCompatActivity {
 
@@ -27,19 +36,26 @@ public class CheckoutActivity extends AppCompatActivity {
     double subtotal = 0.0;
     double shipping = 10.00;
     double total = 0.0;
-    String selectedPaymentMethod = "Cash on Delivery"; // الافتراضي
+    int itemCount = 1;
+    String selectedPaymentMethod = "Cash on Delivery";
+
+    SessionManager sessionManager;
+    AddressManager addressManager;
+    OrderManager orderManager;
+    Address currentAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
-        // ربط عناصر الواجهة
+
+        sessionManager = new SessionManager(this);
+        addressManager = new AddressManager(this);
+        orderManager = new OrderManager(this);
+
         initViews();
-
-        // استقبال الأسعار القادمة من السلة أو صفحة التفاصيل
         receivePricesAndCalculate();
-
-        // تفعيل أزرار التفاعل
+        loadUserAndAddressData();
         setupClickListeners();
     }
 
@@ -49,25 +65,30 @@ public class CheckoutActivity extends AppCompatActivity {
         tvName = findViewById(R.id.tv_user_name);
         tvAddress = findViewById(R.id.tv_address_details);
         tvPhone = findViewById(R.id.tv_phone_number);
-        // ربط صور الـ Radio
+
         imgCash = findViewById(R.id.iv_cash);
         imgCard = findViewById(R.id.iv_card);
         imgPaypal = findViewById(R.id.iv_paypal);
-        // الحاويات الخاصة بكل طريقة دفع لتسهيل الضغط
+
         layoutCash = findViewById(R.id.payment_cash);
         layoutCard = findViewById(R.id.payment_credit_card);
         layoutPaypal = findViewById(R.id.payment_paypal);
+
+        // ملاحظة: هالـ IDs مطابقة تماماً لملف XML (tv_summary_subtotal وليس tv_subtotal)
         tvSubtotal = findViewById(R.id.tv_summary_subtotal);
         tvShipping = findViewById(R.id.tv_summary_shipping);
         tvTotal = findViewById(R.id.tv_summary_total);
+
         btnPlaceOrder = findViewById(R.id.btn_place_order);
     }
 
+    // استقبال الأسعار الحقيقية القادمة من صفحة Cart أو Product Details
     private void receivePricesAndCalculate() {
         Intent intent = getIntent();
         if (intent != null) {
             subtotal = intent.getDoubleExtra("subtotal_price", 0.0);
             shipping = intent.getDoubleExtra("shipping_price", 10.00);
+            itemCount = intent.getIntExtra("item_count", 1);
         }
 
         total = subtotal + shipping;
@@ -77,106 +98,148 @@ public class CheckoutActivity extends AppCompatActivity {
         tvTotal.setText(String.format("$%.2f", total));
     }
 
+    // عرض بيانات المستخدم والعنوان الحقيقية بدل النصوص الثابتة
+    private void loadUserAndAddressData() {
+        currentAddress = addressManager.getDefaultAddress();
+
+        if (currentAddress != null) {
+            tvName.setText(currentAddress.getFullName());
+            tvAddress.setText(currentAddress.getStreetAddress() + ", " + currentAddress.getCity());
+            tvPhone.setText(currentAddress.getPhoneNumber());
+        } else {
+            String userName = sessionManager.getFullName();
+            tvName.setText(userName != null && !userName.isEmpty() ? userName : "Guest User");
+            tvAddress.setText("No address saved yet");
+            tvPhone.setText("Add a phone number");
+        }
+    }
+
     private void setupClickListeners() {
-        // زر الرجوع
-        btnBack.setOnClickListener(v -> finish());
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
-        // 1. عند الضغط على كلمة Change لتغيير عنوان الزبون
-        tvChangeAddress.setOnClickListener(v -> showChangeAddressDialog());
+        // زر Change: ينقل المستخدم فعلياً لصفحة My Addresses لإدارة عناوينه الحقيقية
+        tvChangeAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CheckoutActivity.this, MyAddressesActivity.class);
+                startActivity(intent);
+            }
+        });
 
-        // 2. التحكم في اختيار طريقة الدفع وتبديل الصور (radio_on / radio_off)
-        if (layoutCash != null) {
-            layoutCash.setOnClickListener(v -> selectPaymentMethod("cash"));
-        } else if (imgCash != null) {
-            imgCash.setOnClickListener(v -> selectPaymentMethod("cash"));
-        }
+        layoutCash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectPaymentMethod("cash");
+            }
+        });
 
-        if (layoutCard != null) {
-            layoutCard.setOnClickListener(v -> selectPaymentMethod("card"));
-        } else if (imgCard != null) {
-            imgCard.setOnClickListener(v -> selectPaymentMethod("card"));
-        }
+        layoutCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectPaymentMethod("card");
+            }
+        });
 
-        if (layoutPaypal != null) {
-            layoutPaypal.setOnClickListener(v -> selectPaymentMethod("paypal"));
-        } else if (imgPaypal != null) {
-            imgPaypal.setOnClickListener(v -> selectPaymentMethod("paypal"));
-        }
+        layoutPaypal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectPaymentMethod("paypal");
+            }
+        });
 
-        // 3. زر تأكيد الطلب والانتقال إلى شاشة النجاح الأخيرة
-        btnPlaceOrder.setOnClickListener(v -> {
-            Intent intent = new Intent(CheckoutActivity.this, OrderSuccessActivity.class);
-            startActivity(intent);
-            finish();
+        btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentAddress == null) {
+                    Toast.makeText(CheckoutActivity.this, "Please add a shipping address first", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (subtotal <= 0) {
+                    Toast.makeText(CheckoutActivity.this, "Your cart is empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // إنشاء الطلب الفعلي وحفظه
+                createAndSaveOrder();
+
+                // الانتقال الفعلي لصفحة نجاح الطلب
+                Intent intent = new Intent(CheckoutActivity.this, OrderSuccessActivity.class);
+                startActivity(intent);
+                finish();
+            }
         });
     }
 
-    // --- دالة تبديل صور الـ Radio Button ---
     private void selectPaymentMethod(String method) {
-        // تعيين الصور الافتراضية للجميع إلى radio_off
-        if (imgCash != null) imgCash.setImageResource(R.drawable.ic_radio_off);
-        if (imgCard != null) imgCard.setImageResource(R.drawable.ic_radio_off);
-        if (imgPaypal != null) imgPaypal.setImageResource(R.drawable.ic_radio_off);
+        imgCash.setImageResource(R.drawable.ic_radio_off);
+        imgCard.setImageResource(R.drawable.ic_radio_off);
+        imgPaypal.setImageResource(R.drawable.ic_radio_off);
 
-        // تفعيل الخيار المحدد وتحويل صورته إلى radio_on
         switch (method) {
             case "cash":
-                if (imgCash != null) imgCash.setImageResource(R.drawable.ic_radio_on);
+                imgCash.setImageResource(R.drawable.ic_radio_on);
                 selectedPaymentMethod = "Cash on Delivery";
                 break;
 
             case "card":
-                if (imgCard != null) imgCard.setImageResource(R.drawable.ic_radio_on);
+                imgCard.setImageResource(R.drawable.ic_radio_on);
                 selectedPaymentMethod = "Credit Card";
                 break;
 
             case "paypal":
-                if (imgPaypal != null) imgPaypal.setImageResource(R.drawable.ic_radio_on);
+                imgPaypal.setImageResource(R.drawable.ic_radio_on);
                 selectedPaymentMethod = "PayPal";
                 break;
         }
     }
 
-    // --- دالة إظهار نافذة تعديل العنوان عند الضغط على Change ---
-    private void showChangeAddressDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Update Shipping Address");
+    // إنشاء كائن MyOrder حقيقي بناءً على بيانات الطلب الفعلية وحفظه عبر OrderManager
+    private void createAndSaveOrder() {
+        int newId = generateId();
+        String orderId = generateOrderId();
+        String orderDate = getCurrentDate();
 
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(50, 20, 50, 20);
+        MyOrder newOrder = new MyOrder(
+                newId,
+                orderId,
+                orderDate,
+                itemCount > 1 ? "Multiple Items" : "1 Item",
+                selectedPaymentMethod,
+                subtotal,
+                total,
+                itemCount,
+                "Processing",
+                R.drawable.ic_orders
+        );
 
-        final EditText etName = new EditText(this);
-        etName.setHint("Customer Name");
-        etName.setText(tvName.getText().toString());
-        layout.addView(etName);
+        orderManager.addOrder(newOrder);
+    }
 
-        final EditText etAddress = new EditText(this);
-        etAddress.setHint("Full Address");
-        etAddress.setText(tvAddress.getText().toString());
-        layout.addView(etAddress);
+    private int generateId() {
+        return (int) System.currentTimeMillis();
+    }
 
-        final EditText etPhone = new EditText(this);
-        etPhone.setHint("Phone Number");
-        etPhone.setText(tvPhone.getText().toString());
-        layout.addView(etPhone);
+    private String generateOrderId() {
+        Random random = new Random();
+        int randomNum = 100000 + random.nextInt(900000);
+        return "NM" + randomNum;
+    }
 
-        builder.setView(layout);
+    private String getCurrentDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
+        return sdf.format(new Date());
+    }
 
-        builder.setPositiveButton("Save", (dialog, which) -> {
-            String newName = etName.getText().toString().trim();
-            String newAddress = etAddress.getText().toString().trim();
-            String newPhone = etPhone.getText().toString().trim();
-
-            if (!newName.isEmpty()) tvName.setText(newName);
-            if (!newAddress.isEmpty()) tvAddress.setText(newAddress);
-            if (!newPhone.isEmpty()) tvPhone.setText(newPhone);
-
-            Toast.makeText(CheckoutActivity.this, "Address updated!", Toast.LENGTH_SHORT).show();
-        });
-
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-
-        builder.show();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // تحديث بيانات العنوان تلقائياً لو المستخدم رجع من صفحة My Addresses بعد تعديل/إضافة عنوان
+        loadUserAndAddressData();
     }
 }

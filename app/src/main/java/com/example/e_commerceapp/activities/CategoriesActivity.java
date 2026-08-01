@@ -1,5 +1,8 @@
 package com.example.e_commerceapp.activities;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.GridView;
@@ -120,12 +123,10 @@ public class CategoriesActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-//                Intent intent = new Intent(
-//                        requireContext(),
-//                        CartActivity.class
-//                );
-//
-//                startActivity(intent);
+                Intent intent = new Intent(CategoriesActivity.this, CartActivity.class);
+                startActivity(intent);
+
+                startActivity(intent);
             }
         });
     }

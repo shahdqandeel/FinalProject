@@ -51,10 +51,15 @@ public class CartActivity extends AppCompatActivity {
                     Toast.makeText(CartActivity.this, "Your cart is empty!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                int totalItems = 0;
+                for (CartItem item : CartManager.getCartList()) {
+                    totalItems += item.getQuantity();
+                }
 
                 Intent intent = new Intent(CartActivity.this, CheckoutActivity.class);
                 intent.putExtra("subtotal_price", subtotalPrice);
                 intent.putExtra("shipping_price", shippingFee);
+                intent.putExtra("item_count", totalItems);
 
                 CartManager.clearCart();
                 if(cartAdapter != null){

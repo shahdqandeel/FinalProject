@@ -8,7 +8,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.e_commerceapp.models.Product;
+import com.example.e_commerceapp.utils.FavoriteManager;
 import com.example.e_commerceapp.activities.ProductDetailsActivity;
 import com.example.e_commerceapp.R;
 import com.example.e_commerceapp.models.Home;
@@ -64,6 +67,8 @@ public class HomeAdapter extends BaseAdapter {
 
         ImageView imageHomeItem =
                 root.findViewById(R.id.image_home_item);
+        ImageView imageFavorite =
+                root.findViewById(R.id.image_home_favorite);
 
         TextView tvHomeName =
                 root.findViewById(R.id.tv_home_name);
@@ -92,6 +97,32 @@ public class HomeAdapter extends BaseAdapter {
         tvHomeRating.setText(
                 String.valueOf(home.getRating())
         );
+
+        Product product = new Product(
+                home.getId(),
+                home.getName(),
+                String.valueOf(home.getPrice()),
+                home.getImage(),
+                home.getRating()
+        );
+
+        imageFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                imageFavorite.setImageResource(R.drawable.ic_favorite_red);
+
+                FavoriteManager.addToFavorites(product);
+
+                Toast.makeText(
+                        context,
+                        "Added to Favorites",
+                        Toast.LENGTH_SHORT
+                ).show();
+
+            }
+        });
+
         root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -341,8 +341,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
             Toast.makeText(ProductDetailsActivity.this, "Added (" + quantity + ") to Cart!", Toast.LENGTH_SHORT).show();
         });
 
-        // الشراء المباشر والذهاب للـ Checkout
-        buy_now.setOnClickListener(v -> {
+        // Checkout الشراء المباشر والذهاب للـ 
+            buy_now.setOnClickListener(v -> {
             double cleanPrice = extractPriceAsDouble();
             double subtotalAmount = cleanPrice * quantity;
             double shippingAmount = 10.00;
@@ -350,6 +350,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             Intent intent = new Intent(ProductDetailsActivity.this, CheckoutActivity.class);
             intent.putExtra("subtotal_price", subtotalAmount);
             intent.putExtra("shipping_price", shippingAmount);
+            intent.putExtra("item_count", quantity);
             startActivity(intent);
         });
     }

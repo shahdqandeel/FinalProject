@@ -8,6 +8,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.e_commerceapp.models.Product;
+import com.example.e_commerceapp.utils.FavoriteManager;
 
 import com.example.e_commerceapp.activities.ProductDetailsActivity;
 import com.example.e_commerceapp.R;
@@ -64,6 +68,8 @@ public class AccessoriesAdapter extends BaseAdapter {
 
         ImageView imageAccessoriesItem =
                 root.findViewById(R.id.image_accessories_item);
+        ImageView imageFavorite =
+                root.findViewById(R.id.image_accessories_favorite);
 
         TextView tvAccessoriesName =
                 root.findViewById(R.id.tv_accessories_name);
@@ -92,6 +98,30 @@ public class AccessoriesAdapter extends BaseAdapter {
         tvAccessoriesRating.setText(
                 String.valueOf(accessories.getRating())
         );
+        Product product = new Product(
+                accessories.getId(),
+                accessories.getName(),
+                String.valueOf(accessories.getPrice()),
+                accessories.getImage(),
+                accessories.getRating()
+        );
+
+        imageFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                imageFavorite.setImageResource(R.drawable.ic_favorite_red);
+
+                FavoriteManager.addToFavorites(product);
+
+                Toast.makeText(
+                        context,
+                        "Added to Favorites",
+                        Toast.LENGTH_SHORT
+                ).show();
+
+            }
+        });
 
         root.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,8 +140,8 @@ public class AccessoriesAdapter extends BaseAdapter {
                 context.startActivity(intent);
             }
         });
-        
-        
+
+
 
         return root;
     }

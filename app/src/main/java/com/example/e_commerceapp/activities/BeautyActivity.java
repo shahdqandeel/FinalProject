@@ -5,8 +5,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+
+import java.util.Collections;
+import java.util.Comparator;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.e_commerceapp.R;
 import com.example.e_commerceapp.adapters.BeautyAdapter;
@@ -19,11 +27,14 @@ public class BeautyActivity extends AppCompatActivity {
     ListView listBeauty;
 
     ImageView imageBeautyBack;
+    ImageView imageBeautySearch;
+    ImageView imageBeautyFilter;
     ImageView ivCategories;
 
     TextView tvCategories;
 
     ArrayList<Beauty> beautyArrayList;
+    ArrayList<Beauty> originalBeautyList;
     BeautyAdapter beautyAdapter;
 
     @Override
@@ -35,7 +46,10 @@ public class BeautyActivity extends AppCompatActivity {
         // ربط عناصر الصفحة
         listBeauty = findViewById(R.id.listBeauty);
         imageBeautyBack = findViewById(R.id.imageBeautyBack);
+        imageBeautySearch = findViewById(R.id.imageBeautySearch);
+        imageBeautyFilter = findViewById(R.id.imageBeautyFilter);
         beautyArrayList = new ArrayList<>();
+        originalBeautyList = new ArrayList<>();
 
         beautyArrayList.add(
                 new Beauty(
@@ -112,6 +126,7 @@ public class BeautyActivity extends AppCompatActivity {
                         R.drawable.cerave_cleanser
                 )
         );
+        originalBeautyList.addAll(beautyArrayList);
 
         beautyAdapter = new BeautyAdapter(
                 BeautyActivity.this,
@@ -127,5 +142,96 @@ public class BeautyActivity extends AppCompatActivity {
                 finish();
             }
         });
+        imageBeautyFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                new AlertDialog.Builder(BeautyActivity.this)
+                        .setTitle("Filter")
+                        .setItems(new String[]{
+                                "All",
+                                "Price: Low to High",
+                                "Price: High to Low"
+                        }, (dialog, which) -> {
+
+                            if (which == 0) {
+
+                                beautyArrayList.clear();
+                                beautyArrayList.addAll(originalBeautyList);
+                                beautyAdapter.notifyDataSetChanged();
+
+                            } else if (which == 1) {
+
+                                Collections.sort(
+                                        beautyArrayList,
+                                        Comparator.comparing(Beauty::getPrice)
+                                );
+
+                                beautyAdapter.notifyDataSetChanged();
+
+                            } else {
+
+                                Collections.sort(
+                                        beautyArrayList,
+                                        (b1, b2) -> Float.compare(b2.getPrice(), b1.getPrice())
+                                );
+
+                                beautyAdapter.notifyDataSetChanged();
+
+                            }
+
+                        })
+                        .show();
+
+            }
+        });
+        imageBeautySearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                EditText editText = new EditText(BeautyActivity.this);
+
+                new AlertDialog.Builder(BeautyActivity.this)
+                        .setTitle("Search Product")
+                        .setView(editText)
+
+                        .setPositiveButton("Search", (dialog, which) -> {
+
+                            String searchText = editText.getText().toString().trim();
+
+                            ArrayList<Beauty> searchList = new ArrayList<>();
+
+                            for (Beauty item : originalBeautyList) {
+
+                                if (item.getName().toLowerCase()
+                                        .contains(searchText.toLowerCase())) {
+
+                                    searchList.add(item);
+                                }
+                            }
+
+                            if (searchList.isEmpty()) {
+
+                                Toast.makeText(
+                                        BeautyActivity.this,
+                                        "No products found",
+                                        Toast.LENGTH_SHORT
+                                ).show();
+
+                            } else {
+
+                                beautyArrayList.clear();
+                                beautyArrayList.addAll(searchList);
+                                beautyAdapter.notifyDataSetChanged();
+                            }
+
+                        })
+
+                        .setNegativeButton("Cancel", null)
+                        .show();
+
+            }
+        });
+
     }
 }

@@ -61,6 +61,24 @@ public class AddressManager {
         return addressList;
     }
 
+    // جلب العنوان الافتراضي (أو أول عنوان إذا ما في افتراضي محدد)
+    public Address getDefaultAddress() {
+        ArrayList<Address> allAddresses = getAllAddresses();
+
+        if (allAddresses.isEmpty()) {
+            return null;
+        }
+
+        for (Address address : allAddresses) {
+            if (address.isDefault()) {
+                return address;
+            }
+        }
+
+        // لو ما في عنوان معلّم كـ Default، رجعي أول عنوان بالقائمة
+        return allAddresses.get(0);
+    }
+
     // حذف عنوان معين بناءً على الـ id تبعه
     public void deleteAddress(int addressId) {
         ArrayList<Address> currentList = getAllAddresses();

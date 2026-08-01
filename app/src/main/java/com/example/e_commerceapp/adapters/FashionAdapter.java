@@ -12,6 +12,10 @@ import android.widget.TextView;
 import com.example.e_commerceapp.activities.ProductDetailsActivity;
 import com.example.e_commerceapp.R;
 import com.example.e_commerceapp.models.Fashion;
+import android.widget.Toast;
+
+import com.example.e_commerceapp.models.Product;
+import com.example.e_commerceapp.utils.FavoriteManager;
 
 import java.util.ArrayList;
 
@@ -64,6 +68,8 @@ public class FashionAdapter extends BaseAdapter {
 
         ImageView imageFashionItem =
                 root.findViewById(R.id.image_fashion_item);
+        ImageView imageFavorite =
+                root.findViewById(R.id.image_fashion_favorite);
 
         TextView tvFashionName =
                 root.findViewById(R.id.tv_fashion_name);
@@ -92,6 +98,30 @@ public class FashionAdapter extends BaseAdapter {
         tvFashionRating.setText(
                 String.valueOf(fashion.getRating())
         );
+        Product product = new Product(
+                fashion.getId(),
+                fashion.getName(),
+                String.valueOf(fashion.getPrice()),
+                fashion.getImage(),
+                fashion.getRating()
+        );
+
+        imageFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                imageFavorite.setImageResource(R.drawable.ic_favorite_red);
+
+                FavoriteManager.addToFavorites(product);
+
+                Toast.makeText(
+                        context,
+                        "Added to Favorites",
+                        Toast.LENGTH_SHORT
+                ).show();
+
+            }
+        });
         root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -7,11 +7,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.e_commerceapp.R;
 import com.example.e_commerceapp.adapters.ShoesAdapter;
 import com.example.e_commerceapp.models.Shoes;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.ArrayList;
 
 public class ShoesActivity extends AppCompatActivity {
@@ -20,10 +27,14 @@ public class ShoesActivity extends AppCompatActivity {
 
     ImageView imageShoesBack;
     ImageView ivCategories;
+    ImageView imageShoesSearch;
+    ImageView imageShoesFilter;
 
     TextView tvCategories;
 
     ArrayList<Shoes> shoesArrayList;
+    ArrayList<Shoes> originalShoesList;
+
     ShoesAdapter shoesAdapter;
 
     @Override
@@ -35,8 +46,11 @@ public class ShoesActivity extends AppCompatActivity {
         // ربط عناصر الصفحة
         listShoes = findViewById(R.id.listShoes);
         imageShoesBack = findViewById(R.id.imageShoesBack);
+        imageShoesSearch = findViewById(R.id.imageShoesSearch);
+        imageShoesFilter = findViewById(R.id.imageShoesFilter);
 
         shoesArrayList = new ArrayList<>();
+        originalShoesList = new ArrayList<>();
 
 
         shoesArrayList.add(
@@ -113,6 +127,7 @@ public class ShoesActivity extends AppCompatActivity {
                         R.drawable.ankle_boot
                 )
         );
+        originalShoesList.addAll(shoesArrayList);
 
 
         shoesAdapter = new ShoesAdapter(
@@ -127,6 +142,96 @@ public class ShoesActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 finish();
+            }
+        });
+        imageShoesFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                new AlertDialog.Builder(ShoesActivity.this)
+                        .setTitle("Filter")
+                        .setItems(new String[]{
+                                "All",
+                                "Price: Low to High",
+                                "Price: High to Low"
+                        }, (dialog, which) -> {
+
+                            if (which == 0) {
+
+                                shoesArrayList.clear();
+                                shoesArrayList.addAll(originalShoesList);
+                                shoesAdapter.notifyDataSetChanged();
+
+                            } else if (which == 1) {
+
+                                Collections.sort(
+                                        shoesArrayList,
+                                        Comparator.comparing(Shoes::getPrice)
+                                );
+
+                                shoesAdapter.notifyDataSetChanged();
+
+                            } else {
+
+                                Collections.sort(
+                                        shoesArrayList,
+                                        (s1, s2) -> Float.compare(s2.getPrice(), s1.getPrice())
+                                );
+
+                                shoesAdapter.notifyDataSetChanged();
+
+                            }
+
+                        })
+                        .show();
+
+            }
+        });
+        imageShoesSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                EditText editText = new EditText(ShoesActivity.this);
+
+                new AlertDialog.Builder(ShoesActivity.this)
+                        .setTitle("Search Product")
+                        .setView(editText)
+
+                        .setPositiveButton("Search", (dialog, which) -> {
+
+                            String searchText = editText.getText().toString().trim();
+
+                            ArrayList<Shoes> searchList = new ArrayList<>();
+
+                            for (Shoes item : originalShoesList) {
+
+                                if (item.getName().toLowerCase()
+                                        .contains(searchText.toLowerCase())) {
+
+                                    searchList.add(item);
+                                }
+                            }
+
+                            if (searchList.isEmpty()) {
+
+                                Toast.makeText(
+                                        ShoesActivity.this,
+                                        "No products found",
+                                        Toast.LENGTH_SHORT
+                                ).show();
+
+                            } else {
+
+                                shoesArrayList.clear();
+                                shoesArrayList.addAll(searchList);
+                                shoesAdapter.notifyDataSetChanged();
+                            }
+
+                        })
+
+                        .setNegativeButton("Cancel", null)
+                        .show();
+
             }
         });
     }

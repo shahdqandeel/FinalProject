@@ -12,6 +12,10 @@ import android.widget.TextView;
 import com.example.e_commerceapp.activities.ProductDetailsActivity;
 import com.example.e_commerceapp.R;
 import com.example.e_commerceapp.models.Shoes;
+import android.widget.Toast;
+
+import com.example.e_commerceapp.models.Product;
+import com.example.e_commerceapp.utils.FavoriteManager;
 
 import java.util.ArrayList;
 
@@ -67,6 +71,8 @@ public class ShoesAdapter extends BaseAdapter {
 
         ImageView imageShoesItem =
                 root.findViewById(R.id.image_shoes_item);
+        ImageView imageFavorite =
+                root.findViewById(R.id.image_shoes_favorite);
 
         TextView tvShoesName =
                 root.findViewById(R.id.tv_shoes_name);
@@ -76,6 +82,7 @@ public class ShoesAdapter extends BaseAdapter {
 
         TextView tvShoesRating =
                 root.findViewById(R.id.tv_shoes_rating);
+
 
         Shoes shoes =
                 shoesArrayList.get(position);
@@ -95,6 +102,30 @@ public class ShoesAdapter extends BaseAdapter {
         tvShoesRating.setText(
                 String.valueOf(shoes.getRating())
         );
+        Product product = new Product(
+                shoes.getId(),
+                shoes.getName(),
+                String.valueOf(shoes.getPrice()),
+                shoes.getImage(),
+                shoes.getRating()
+        );
+
+        imageFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                imageFavorite.setImageResource(R.drawable.ic_favorite_red);
+
+                FavoriteManager.addToFavorites(product);
+
+                Toast.makeText(
+                        context,
+                        "Added to Favorites",
+                        Toast.LENGTH_SHORT
+                ).show();
+
+            }
+        });
 
         root.setOnClickListener(new View.OnClickListener() {
             @Override
